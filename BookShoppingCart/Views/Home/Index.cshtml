@@ -1,0 +1,78 @@
+﻿
+
+
+
+
+
+@model BookDisplayModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form asp-action="Index" class="row row-cols-lg-auto g-3 align-items-center m-3">
+  <div class="col-12">
+    <label class="visually-hidden" for="sTerm">Search by Name</label>
+    <div class="input-group">
+            <div class="input-group-text"><i class="bi bi-search"></i></div>
+            <input type="text" class="form-control" value="@Model.sTerm" id="sTerm" name="sTerm" placeholder="Search">
+    </div>
+  </div>
+
+  <div class="col-12">
+    <label class="visually-hidden" for="inlineFormSelectPref">Genrea</label>
+        <select class="form-select" id="GenreId" name="GenreId">
+      <option selected>Genre</option>
+      @foreach(var genre in Model.Genres)
+            {
+                <option selected="@(genre.Id==Model.GenreId)" value="@genre.Id">@genre.GenreName</option>
+            }
+        </select>
+  </div>
+
+
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Search</button>
+        <a href="/Home/Index" type="submit" class="btn btn-secondary">Reset</a>
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+<div class=" w-100 d-flex flex-wrap ">
+    @foreach( var book in Model.Books)
+    {
+    <div class="card mx-2 mb-4" style="width: 16rem;">
+            <img class="card-img-top" src="https://picsum.photos/300/200" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@book.BookName</h5>
+            <p class="card-text">
+                Author: @book.AuthorName
+            </p>
+            <p>
+                    <a asp-controller="Genre" asp-action="Details" asp-route-id="@book.GenreId" >Genre: @book.GenreName</a>
+                    
+            </p>
+            <p>
+                Price: @book.Price
+            </p>
+                <button type="button" onclick="add(this,@book.Id);" class="btn btn-primary"> Add to Cart</button>
+                <a  asp-controller="Cart" asp-action="AddItem" asp-route-bookId="@book.Id" asp-route-redirect="1"  class="btn btn-primary"> Sum to Cart</a>
+        </div>
+    </div>
+    }
+
+</div>
+
+@section Scripts{
+    <script>
+       
+       
+    </script>
+}

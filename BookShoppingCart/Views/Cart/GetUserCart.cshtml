@@ -1,0 +1,61 @@
+﻿@model ShoppingCart
+@{
+    ViewData["Title"] = "GetUserCart";
+}
+
+
+<div style="width:90%;margin:auto">
+    @if(Model!=null && Model.CartDetails!=null && Model.CartDetails.Count()>0)
+    {
+        
+   
+    <h3>My Cart</h3>
+    <table class="table table-bordered text-center">
+        <tr>
+            <th>Book</th>
+            <th>Image</th>
+            <th>Genre</th>
+            <th>Unit Price</th>
+            <th>Qty</th>
+            <th>Total Price</th>
+        </tr>
+        @foreach(var item in Model.CartDetails)
+        {
+            <tr>
+                <td>@item.Book.BookName</td>
+                <td><img src="https://picsum.photos/60/40" /></td>
+                <td>@item.Book.Genre.GenreName</td>
+                <td>@item.Book.Price</td>
+                <td>
+                        <a class="btn btn-info" asp-controller="Cart" asp-action="AddItem" asp-route-bookId="@item.Book.Id" asp-route-redirect="2">+</a>
+                           <span id="itemqn"> @item.Quantity</span>
+                        <a class="btn btn-outline-danger" asp-controller="Cart"  asp-action="RemoveItem" asp-route-bookId="@item.Book.Id" asp-route-redirect="2">-</a>
+                    
+                </td>
+                <td>@(item.Book.Price * item.Quantity)</td>
+            </tr>
+            
+        }
+        </table>
+        <div class="my-2">
+            <h5>Total(INR): @ViewData["Total"]</h5>
+
+        </div>
+        <div class="my-2">
+            <a class="btn btn-primary" asp-controller="Cart" asp-action="CheckOut">Checkout</a>
+        </div>
+
+
+
+
+
+
+    }
+    else
+    {
+        <br />
+        <br />
+        <h2 class="text-center">You did not added anything in Cart yet</h2>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary align-content-center">Go Back to Shop</a>
+    }
+</div>

@@ -1,0 +1,49 @@
+﻿@model GenreDetailModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Genre</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Genre.GenreName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Genre.GenreName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Genre.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+
+
+</div>
+<div class=" w-100 d-flex flex-wrap ">
+    @foreach (var book in Model.Book)
+    {
+        <div class="card mx-2 mb-4" style="width: 16rem;">
+            <img class="card-img-top" src="https://picsum.photos/300/200" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@book.BookName</h5>
+                <p class="card-text">
+                    Author: @book.AuthorName
+                </p>
+                <p>
+                    Genre: @book.Genre.GenreName
+                </p>
+                <p>
+                    Price:@book.Price
+                </p>
+                <button type="button" onclick="add(this,@book.Id);" class="btn btn-primary"> Add to Cart</button>
+                @*<a asp-controller="Cart" asp-action="AddItem" asp-route-bookId="@book.Id" asp-route-redirect="1" class="btn btn-primary"> Sum to Cart</a>*@
+            </div>
+        </div>
+    }
+
+</div>
