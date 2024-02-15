@@ -12,6 +12,7 @@ namespace BookShoppingCart.Data
         {
         }
         public DbSet<Genre> Genre { get; set; }
+        public DbSet<Author> Author { get; set; }
         public DbSet<Book> Book { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<CartDetail> CartDetail { get; set; }

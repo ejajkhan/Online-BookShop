@@ -12,20 +12,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShoppingCart.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230610163106_add author name to book")]
-    partial class addauthornametobook
+    [Migration("20240215120206_as")]
+    partial class @as
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BookShoppingCart.Models.Book", b =>
+            modelBuilder.Entity("BookShoppingCart.Models.Author", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,6 +36,22 @@ namespace BookShoppingCart.Migrations
                     b.Property<string>("AuthorName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Author");
+                });
+
+            modelBuilder.Entity("BookShoppingCart.Models.Book", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("BookImage")
                         .HasColumnType("nvarchar(max)");
@@ -51,6 +67,8 @@ namespace BookShoppingCart.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("GenreId");
 
@@ -178,6 +196,50 @@ namespace BookShoppingCart.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 7,
+                            StatusId = 7,
+                            StatusName = "Lost"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            StatusId = 1,
+                            StatusName = "Pending"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StatusId = 2,
+                            StatusName = "Shipped"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            StatusId = 3,
+                            StatusName = "Delivered"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            StatusId = 4,
+                            StatusName = "Cancelled"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            StatusId = 5,
+                            StatusName = "Returned"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            StatusId = 6,
+                            StatusName = "Refund"
+                        });
                 });
 
             modelBuilder.Entity("BookShoppingCart.Models.ShoppingCart", b =>
@@ -400,11 +462,19 @@ namespace BookShoppingCart.Migrations
 
             modelBuilder.Entity("BookShoppingCart.Models.Book", b =>
                 {
+                    b.HasOne("BookShoppingCart.Models.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BookShoppingCart.Models.Genre", "Genre")
                         .WithMany("Books")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Genre");
                 });
@@ -418,7 +488,7 @@ namespace BookShoppingCart.Migrations
                         .IsRequired();
 
                     b.HasOne("BookShoppingCart.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany()
+                        .WithMany("CartDetails")
                         .HasForeignKey("ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -509,6 +579,11 @@ namespace BookShoppingCart.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BookShoppingCart.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
             modelBuilder.Entity("BookShoppingCart.Models.Book", b =>
                 {
                     b.Navigation("CartDetails");
@@ -524,6 +599,11 @@ namespace BookShoppingCart.Migrations
             modelBuilder.Entity("BookShoppingCart.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("BookShoppingCart.Models.ShoppingCart", b =>
+                {
+                    b.Navigation("CartDetails");
                 });
 #pragma warning restore 612, 618
         }

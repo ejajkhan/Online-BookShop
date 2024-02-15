@@ -8,14 +8,18 @@ namespace BookShoppingCart.Models
         public int Id { get; set; }
         [Required]
         public string BookName { get; set; }
-        [Required]
-        public string AuthorName { get; set; }
+
         [Required]
         public Double Price { get; set; }
         public string? BookImage { get; set; }
         [Required]
         public int GenreId { get; set; }
         public Genre? Genre { get; set; }
+        [Required]
+        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
+        [NotMapped]
+        public string? AuthorName { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
         public List<CartDetail>? CartDetails { get; set; }
         [NotMapped]

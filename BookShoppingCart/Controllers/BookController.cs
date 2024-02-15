@@ -22,7 +22,7 @@ namespace BookShoppingCart.Controllers
         // GET: Book
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Book.Include(b => b.Genre);
+            var applicationDbContext = _context.Book.Include(b => b.Genre).Include(b=>b.Author);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace BookShoppingCart.Controllers
 
             var book = await _context.Book
                 .Include(b => b.Genre)
+                .Include(a=>a.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
@@ -50,6 +51,7 @@ namespace BookShoppingCart.Controllers
         public IActionResult Create()
         {
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "GenreName");
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "AuthorName");
             return View();
         }
 
@@ -58,11 +60,13 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BookName,AuthorName,Price,BookImage,GenreId")] Book book)
+        public async Task<IActionResult> Create([Bind("Id,BookName,Price,BookImage,GenreId,AuthorId")] Book book)
         {
             if (ModelState.IsValid)
             {
                 Genre myGenre = _context.Genre.Find(book.GenreId);
+                Author myauthor= _context.Author.Find(book.AuthorId);
+                book.Author = myauthor;
                 book.Genre = myGenre;
                 _context.Add(book);
                 await _context.SaveChangesAsync();
@@ -70,6 +74,7 @@ namespace BookShoppingCart.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "GenreName", book.GenreId);
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "AuthorName", book.AuthorId);
             return View(book);
         }
 
@@ -87,6 +92,7 @@ namespace BookShoppingCart.Controllers
                 return NotFound();
             }
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "GenreName", book.GenreId);
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "AuthorName", book.AuthorId);
             return View(book);
         }
 
@@ -95,7 +101,7 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,AuthorName,Price,BookImage,GenreId")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookName,Price,BookImage,GenreId,AuthorId")] Book book)
         {
             if (id != book.Id)
             {
@@ -124,6 +130,7 @@ namespace BookShoppingCart.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "GenreName", book.GenreId);
+            ViewData["AuthorId"] = new SelectList(_context.Author, "Id", "AuthorName", book.AuthorId);
             return View(book);
         }
 
@@ -137,6 +144,7 @@ namespace BookShoppingCart.Controllers
 
             var book = await _context.Book
                 .Include(b => b.Genre)
+                .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {

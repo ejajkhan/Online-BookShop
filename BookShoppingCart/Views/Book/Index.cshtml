@@ -21,9 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookImage)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
@@ -37,16 +35,15 @@
                 @Html.DisplayFor(modelItem => item.BookName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AuthorName)
+                    <a asp-controller="Author" asp-action="Details" asp-route-id="@item.Author.Id">@item.Author.AuthorName</a>
+                @Html.DisplayFor(modelItem => item.Author.AuthorName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.BookImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre.GenreName)
+                    <a asp-controller="Genre" asp-action="Details" asp-route-id="@item.Genre.Id">@item.Genre.GenreName</a> |
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
