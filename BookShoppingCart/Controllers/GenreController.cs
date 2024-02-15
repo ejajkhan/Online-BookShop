@@ -67,7 +67,7 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,GenreName")] Genre genre)
+        public async Task<IActionResult> Create([Bind("Id,GenreName,Description")] Genre genre)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GenreName")] Genre genre)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,GenreName,Description")] Genre genre)
         {
             if (id != genre.Id)
             {

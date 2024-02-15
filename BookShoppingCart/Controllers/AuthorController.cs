@@ -56,7 +56,7 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AuthorName")] Author author)
+        public async Task<IActionResult> Create([Bind("Id,AuthorName,Description")] Author author)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace BookShoppingCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorName")] Author author)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorName,Description")] Author author)
         {
             if (id != author.Id)
             {
